@@ -2,4 +2,4 @@ name: CookieLib
 version: '${project.version}'
 main: tk.sakizciadam.cookielib.CookieLib
 authors: [SakizciAdam]
-description: Really cool plugin for my other plugins
+description: Simple, easy to use library for Spigot Servers

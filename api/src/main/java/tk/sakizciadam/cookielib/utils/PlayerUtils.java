@@ -20,6 +20,7 @@ import tk.sakizciadam.cookielib.npc.AbstractNPC;
 import tk.sakizciadam.cookielib.npc.NPCManager;
 import tk.sakizciadam.cookielib.npc.NPCNavigator;
 import tk.sakizciadam.cookielib.npc.NPCType;
+import tk.sakizciadam.cookielib.npc.interfaces.CreeperNPC;
 import tk.sakizciadam.cookielib.packet.WrappedPacket;
 import tk.sakizciadam.cookielib.utils.reflection.FieldGetter;
 import tk.sakizciadam.cookielib.utils.reflection.MethodGetter;
@@ -64,13 +65,14 @@ public class PlayerUtils {
         Listener listener=new Listener() {
             @EventHandler(priority = EventPriority.LOWEST)
             public final void onNPCSpawn(CNPCSpawnEvent event){
-                //testing
+
                 
                 event.getAbstractNPC().setCustomName("gamer");
                 event.getAbstractNPC().setCustomNameVisible(true);
                 event.getAbstractNPC().removeGoals();
                 event.getAbstractNPC().setCanBeAttacked(false);
                 event.getAbstractNPC().setCollidable(true);
+
                 Bukkit.getScheduler().runTaskTimer(CookieLib.getLib(), new Runnable() {
                     @Override
                     public void run() {
@@ -78,7 +80,7 @@ public class PlayerUtils {
                             NPCManager npcManager=CookieLib.getLib().getNPCManager();
 
                             NPCNavigator navigator=(NPCNavigator)event.getAbstractNPC().getOrCreateAddon(npcManager.getNPCNavigatorClass());
-                            navigator.walkTo(Bukkit.getPlayer("SakizciAdam").getLocation());
+                            navigator.targetEntity(Bukkit.getPlayer("SakizciAdam"));
                         }
                     }
                 },5l,20l);
@@ -91,7 +93,7 @@ public class PlayerUtils {
                 Bukkit.getScheduler().runTaskLater(CookieLib.getLib(), new Runnable() {
                     @Override
                     public void run() {
-                        AbstractNPC abstractNPC= NPCManager.get().createNPC(NPCType.SHEEP);
+                        AbstractNPC abstractNPC= NPCManager.get().createNPC(NPCType.CREEPER);
 
 
                         abstractNPC.spawn(e.getPlayer().getLocation());

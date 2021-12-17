@@ -31,6 +31,10 @@ public abstract class CEntity extends AbstractNPC {
         return entity;
     }
 
+    public void spawn(Location location){
+        super.spawn(location);
+    }
+
     @Override
     public int getEntityID() {
         return entity!=null ? entity.getId() : -1;
@@ -39,7 +43,7 @@ public abstract class CEntity extends AbstractNPC {
     @Override
     public float getEntitySpeed() {
 
-        return (float) entity.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).getValue()*5;
+        return (float) ((float) entity.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).getValue()*3.2);
     }
 
     public Entity getCraftEntity() {

@@ -28,9 +28,9 @@ public abstract class AbstractNPC {
 
     public void spawn(Location location){
 
-        addons.forEach(NPCAddon::onSpawn);
+
         CookieLib.getLib().getNPCManager().requestSpawnEvent(this);
-        addons.forEach(NPCAddon::afterSpawn);
+
     }
 
     public NPCAddon getAddon(Class<? extends NPCAddon> clazz){
@@ -58,7 +58,7 @@ public abstract class AbstractNPC {
 
             NPCAddon addon= (NPCAddon) constructor.newInstance(this);
             if(addon!=null){
-                Logger.info("Created addon "+clazz.getSimpleName());
+                addon.afterSpawn();
                 addons.add(addon);
                 return;
             }

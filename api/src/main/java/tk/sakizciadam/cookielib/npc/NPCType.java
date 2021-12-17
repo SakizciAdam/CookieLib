@@ -7,7 +7,8 @@ import tk.sakizciadam.cookielib.utils.reflection.ReflectionUtils;
 import java.util.Map;
 
 public enum NPCType {
-    SHEEP("Sheep",91,"EntitySheep","CSheep$CSheepEntity",15198183, 16758197)
+    SHEEP("Sheep",91,"EntitySheep","CSheep$CSheepEntity",15198183, 16758197),
+    CREEPER("Creeper",50, "EntityCreeper","CCreeper$CCreeperEntity",894731, 0)
     ;
 
     private final String name,vanillaClassName,customClassName;

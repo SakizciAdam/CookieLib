@@ -1,35 +1,21 @@
 package tk.sakizciadam.cookielib.npc.nms.v1_8_R3;
 
-import com.google.common.collect.Sets;
 import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftCreeper;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftSheep;
-import org.bukkit.craftbukkit.v1_8_R3.util.UnsafeList;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Villager;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import tk.sakizciadam.cookielib.CookieLib;
 import tk.sakizciadam.cookielib.minecraft.WrappedEnumColor;
 import tk.sakizciadam.cookielib.npc.AbstractNPC;
 import tk.sakizciadam.cookielib.npc.NPCType;
+import tk.sakizciadam.cookielib.npc.interfaces.CreeperNPC;
 import tk.sakizciadam.cookielib.npc.interfaces.SheepNPC;
-import tk.sakizciadam.cookielib.packet.server.play.WrappedSpawnEntity;
-import tk.sakizciadam.cookielib.utils.Logger;
-import tk.sakizciadam.cookielib.utils.PlayerUtils;
 import tk.sakizciadam.cookielib.utils.reflection.QuickReflection;
 
-import java.lang.reflect.Field;
-import java.util.List;
+public class CCreeper extends CEntity implements CreeperNPC {
 
-public class CSheep extends CEntity implements SheepNPC {
-
-    public CSheep(Integer id) {
-        super(NPCType.SHEEP,id);
+    public CCreeper(Integer id) {
+        super(NPCType.CREEPER,id);
 
     }
 
@@ -38,7 +24,7 @@ public class CSheep extends CEntity implements SheepNPC {
 
 
         World mcWorld = ((CraftWorld) loc.getWorld()).getHandle();
-        final CSheepEntity entity = new CSheepEntity(mcWorld,this);
+        final CCreeperEntity entity = new CCreeperEntity(mcWorld,this);
         entity.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         ((CraftLivingEntity) entity.getBukkitEntity()).setRemoveWhenFarAway(false);
         mcWorld.addEntity(entity, CreatureSpawnEvent.SpawnReason.CUSTOM);
@@ -48,23 +34,47 @@ public class CSheep extends CEntity implements SheepNPC {
         super.spawn(loc);
     }
 
-
-
     @Override
-    public void setColor(WrappedEnumColor color) {
-        ((CSheepEntity)this.getEntity()).setColor(EnumColor.fromColorIndex(color.getId()));
+    public void setIgnited(boolean b) {
+        ((CCreeperEntity)this.getEntity()).setPowered(b);
     }
 
     @Override
-    public WrappedEnumColor getColor() {
-        return WrappedEnumColor.valueOf(((CSheepEntity)this.getEntity()).getColor().name());
+    public boolean isIgnited() {
+        return ((CCreeperEntity)this.getEntity()).isPowered();
     }
 
-    public static class CSheepEntity extends EntitySheep {
+    @Override
+    public int getFuseTicks() {
+        CCreeperEntity entity=((CCreeperEntity)this.getEntity());
+        return (int) QuickReflection.getField("fuseTicks",EntityCreeper.class,entity);
+    }
+
+    @Override
+    public void setFuseTicks(int x) {
+        CCreeperEntity entity=((CCreeperEntity)this.getEntity());
+        QuickReflection.setField("fuseTicks",EntityCreeper.class,entity,x);
+    }
+
+    @Override
+    public int getMaxFuseTicks() {
+        CCreeperEntity entity=((CCreeperEntity)this.getEntity());
+        return (int) QuickReflection.getField("maxFuseTicks",EntityCreeper.class,entity);
+
+    }
+
+    @Override
+    public void setMaxFuseTicks(int x) {
+        CCreeperEntity entity=((CCreeperEntity)this.getEntity());
+        QuickReflection.setField("maxFuseTicks",EntityCreeper.class,entity,x);
+    }
+
+
+    public static class CCreeperEntity extends EntityCreeper {
         private AbstractNPC abstractNPC;
 
 
-        public CSheepEntity(World world,AbstractNPC abstractNPC) {
+        public CCreeperEntity(World world,AbstractNPC abstractNPC) {
             super(world);
             this.abstractNPC=abstractNPC;
         }
@@ -81,6 +91,10 @@ public class CSheep extends CEntity implements SheepNPC {
             if(!abstractNPC.isCollidable()) return;
 
             super.g(d0, d1, d2);
+        }
+
+        public float bE(){
+            return 0.42f;
         }
 
 

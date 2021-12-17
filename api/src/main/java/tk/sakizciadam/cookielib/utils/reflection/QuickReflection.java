@@ -9,6 +9,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class QuickReflection {
+    public static void setField(String fieldName, Class clazz, Object object,Object newValue){
+
+        try {
+            Field field = clazz.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(object,newValue);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
     public static Object getField(String fieldName, Class clazz, Object object){
 
         try {
