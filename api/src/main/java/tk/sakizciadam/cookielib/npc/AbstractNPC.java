@@ -3,6 +3,7 @@ package tk.sakizciadam.cookielib.npc;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import tk.sakizciadam.cookielib.CookieLib;
+import tk.sakizciadam.cookielib.hologram.Hologram;
 import tk.sakizciadam.cookielib.npc.addon.NPCAddon;
 import tk.sakizciadam.cookielib.utils.Logger;
 
@@ -17,19 +18,33 @@ public abstract class AbstractNPC {
     private final NPCType npcType;
     private boolean canBeAttacked=false,collidable;
     private List<NPCAddon> addons;
+    private Hologram hologram;
+    private boolean spawned;
 
 
     public AbstractNPC(NPCType npcType,int id){
         this.npcType=npcType;
         this.npcID=id;
         this.addons=new ArrayList<>();
+        this.spawned=false;
 
+    }
+
+    public void attachHologram(Hologram hologram){
+        this.hologram=hologram;
+
+
+    }
+
+    public boolean isSpawned() {
+        return spawned;
     }
 
     public void spawn(Location location){
 
 
         CookieLib.getLib().getNPCManager().requestSpawnEvent(this);
+        this.spawned=true;
 
     }
 
@@ -111,7 +126,10 @@ public abstract class AbstractNPC {
 
     public abstract void setCustomNameVisible(boolean b);
 
-    public abstract void destroy();
+    public void destroy(){
+        this.spawned=false;
+        this.hologram.getArmorStand().remove();
+    }
 
     public abstract void removeGoals();
 
@@ -126,4 +144,11 @@ public abstract class AbstractNPC {
     }
 
     public abstract int getEntityID();
+
+    public void onTick(){
+        if(this.hologram!=null&&spawned){
+            this.hologram.teleport(this.getCraftEntity().getLocation().clone().add(0,1,0));
+
+        }
+    }
 }

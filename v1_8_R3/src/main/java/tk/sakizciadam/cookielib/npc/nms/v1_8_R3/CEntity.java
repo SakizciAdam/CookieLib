@@ -36,6 +36,12 @@ public abstract class CEntity extends AbstractNPC {
     }
 
     @Override
+    public void onTick() {
+        super.onTick();
+
+    }
+
+    @Override
     public int getEntityID() {
         return entity!=null ? entity.getId() : -1;
     }
@@ -88,6 +94,7 @@ public abstract class CEntity extends AbstractNPC {
 
     @Override
     public void destroy() {
+        super.destroy();
         this.entity.getBukkitEntity().remove();
         this.entity=null;
     }

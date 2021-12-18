@@ -83,7 +83,10 @@ public class CSheep extends CEntity implements SheepNPC {
             super.g(d0, d1, d2);
         }
 
-
+        public void t_(){
+            super.t_();
+            abstractNPC.onTick();
+        }
     }
 
 

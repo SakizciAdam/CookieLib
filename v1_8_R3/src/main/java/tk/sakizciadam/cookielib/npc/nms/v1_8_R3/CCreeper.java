@@ -97,8 +97,15 @@ public class CCreeper extends CEntity implements CreeperNPC {
             return 0.42f;
         }
 
+        public void t_(){
+            super.t_();
+            abstractNPC.onTick();
+        }
+
 
     }
+
+
 
 
 

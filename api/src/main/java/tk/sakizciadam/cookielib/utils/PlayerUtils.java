@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import tk.sakizciadam.cookielib.CookieLib;
 import tk.sakizciadam.cookielib.events.CNPCSpawnEvent;
+import tk.sakizciadam.cookielib.hologram.Hologram;
 import tk.sakizciadam.cookielib.minecraft.WrappedCraftPlayer;
 import tk.sakizciadam.cookielib.minecraft.WrappedEntityPlayer;
 import tk.sakizciadam.cookielib.npc.AbstractNPC;
@@ -65,25 +66,18 @@ public class PlayerUtils {
         Listener listener=new Listener() {
             @EventHandler(priority = EventPriority.LOWEST)
             public final void onNPCSpawn(CNPCSpawnEvent event){
-
+                Hologram hologram=new Hologram("Gamer");
+                hologram.spawn(event.getAbstractNPC().getLocation());
                 
-                event.getAbstractNPC().setCustomName("gamer");
-                event.getAbstractNPC().setCustomNameVisible(true);
+                event.getAbstractNPC().attachHologram(hologram);
                 event.getAbstractNPC().removeGoals();
                 event.getAbstractNPC().setCanBeAttacked(false);
                 event.getAbstractNPC().setCollidable(true);
 
-                Bukkit.getScheduler().runTaskTimer(CookieLib.getLib(), new Runnable() {
-                    @Override
-                    public void run() {
-                        if(event.getAbstractNPC()!=null){
-                            NPCManager npcManager=CookieLib.getLib().getNPCManager();
+                NPCManager npcManager=CookieLib.getLib().getNPCManager();
 
-                            NPCNavigator navigator=(NPCNavigator)event.getAbstractNPC().getOrCreateAddon(npcManager.getNPCNavigatorClass());
-                            navigator.targetEntity(Bukkit.getPlayer("SakizciAdam"));
-                        }
-                    }
-                },5l,20l);
+                NPCNavigator navigator=(NPCNavigator)event.getAbstractNPC().getOrCreateAddon(npcManager.getNPCNavigatorClass());
+                navigator.targetEntity(Bukkit.getPlayer("SakizciAdam"));
             }
 
             @EventHandler(priority = EventPriority.LOWEST)
